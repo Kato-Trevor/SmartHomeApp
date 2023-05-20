@@ -22,7 +22,6 @@ class NewRoutine : AppCompatActivity() {
         binding.floatingActionButton.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             startActivity(intent)
-            finish()
         }
         binding.backArrow.setOnClickListener {
             finish()

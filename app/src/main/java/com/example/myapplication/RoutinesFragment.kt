@@ -9,10 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.DialogUpdateBinding
@@ -120,8 +117,7 @@ class RoutinesFragment : Fragment() {
                     override fun onItemClick(position: Int) {
                         // Handle the item click event
                         val clickedItem = getRoutinesList()[position]
-                        updateRecordDialog(clickedItem)
-//                        Toast.makeText(context, "Clicked: $clickedItem", Toast.LENGTH_SHORT).show()
+                        updateDialog(clickedItem)
                     }
                 })
 
@@ -134,23 +130,32 @@ class RoutinesFragment : Fragment() {
         }
     }
 
-    private fun updateRecordDialog(routineModel: RoutineModelClass) {
+    private fun updateDialog(routineModel: RoutineModelClass) {
+        val myBuilder = AlertDialog.Builder(requireContext())
+        myBuilder.setTitle("Update Routine")
 
-        val updateDialog = Dialog(requireContext(), R.style.Theme_Dialog)
-        /*Set the screen content from a layout resource.
+        val inputName = EditText(requireContext())
+        val notificationText = EditText(requireContext())
 
-         The resource will be inflated, adding all top-level views to the screen.*/
-        updateDialog.setContentView(R.layout.dialog_update)
+        // Set up the layout for the EditText views (one above the other)
+        val layout = LinearLayout(requireContext())
+        layout.orientation = LinearLayout.VERTICAL
+        layout.addView(inputName)
+        layout.addView(notificationText)
+        myBuilder.setView(layout)
 
-        //set the editText values to the previous names
-        updateBinding.routineName.setText(routineModel.routineName)
-        updateBinding.notificationText.setText(routineModel.notificationText)
+        inputName.setText(routineModel.routineName)
+        notificationText.setText(routineModel.notificationText)
 
-        //what happens when update is clicked
-        updateBinding.tvUpdate.setOnClickListener{
+        inputName.hint = "Routine name"
+        notificationText.hint = "Notification Text"
 
-            val name = updateBinding.routineName.text.toString()
-            val text = updateBinding.notificationText.text.toString()
+        myBuilder.setPositiveButton("UPDATE") { dialog, _ ->
+
+            dialog.dismiss()
+
+            val name = inputName.text.toString()
+            val text = notificationText.text.toString()
 
             val databaseHandler: RoutineHandler = RoutineHandler(requireContext())
 
@@ -161,15 +166,12 @@ class RoutinesFragment : Fragment() {
                             routineModel.id,
                             name,
                             routineModel.lastRun,
-                            routineModel.notificationText
+                            text
                         )
                     )
                 if (status > -1) {
                     Toast.makeText(requireContext(), "Record Updated.", Toast.LENGTH_LONG).show()
-
                     setUpRoutinesList()
-
-                    updateDialog.dismiss() // Dialog will be dismissed
                 }
             } else {
                 Toast.makeText(
@@ -180,16 +182,14 @@ class RoutinesFragment : Fragment() {
             }
         }
 
-        //what happens when delete is clicked
-        updateBinding.tvDelete.setOnClickListener{
+        myBuilder.setNeutralButton("DELETE") { dialog, _ ->
             deleteRecordAlertDialog(routineModel)
         }
-        //what happens when cancel is clicked
-        updateBinding.tvCancel.setOnClickListener{
-            updateDialog.dismiss()
+
+        myBuilder.setNegativeButton("CANCEL") { dialog, _ ->
+            dialog.cancel()
         }
-        //Start the dialog and display it on screen.
-        updateDialog.show()
+        myBuilder.show()
     }
 
     private fun deleteRecordAlertDialog(routine: RoutineModelClass) {

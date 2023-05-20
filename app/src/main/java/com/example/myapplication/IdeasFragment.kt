@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -45,12 +47,16 @@ class IdeasFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.exercisePic.setOnClickListener {
-            val intent = Intent(context, RoutineInputs::class.java)
+        binding.newsPic.setOnClickListener {
+            val text = binding.news.text.toString()
+            val intent = Intent(requireContext(), RoutineInputs::class.java)
+            intent.putExtra("routineText", text)
             startActivity(intent)
         }
         binding.thanksGivingPic.setOnClickListener {
-            val intent = Intent(context, RoutineInputs::class.java)
+            val text = binding.thanksgiving.text.toString()
+            val intent = Intent(requireContext(), RoutineInputs::class.java)
+            intent.putExtra("routineText", text)
             startActivity(intent)
         }
     }

@@ -50,6 +50,7 @@
         android:background="#E2E4E5"
         android:padding="10dp">
 
+
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
@@ -88,13 +89,13 @@
             android:textAlignment="center"
             android:textSize="15sp"
             android:visibility="visible" />
-
+        <!--Date and Time-->
         <RelativeLayout
-            android:padding="15dp"
-            android:visibility="gone"
             android:id="@+id/time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/clock"
@@ -129,6 +130,55 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date"
+                    android:text="The time is 12:00 AM" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!--location-->
+        <RelativeLayout
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:visibility="gone"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            >
+
+            <ImageView
+                android:id="@+id/location_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_location_on_24"
+                app:tint="@color/black" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/baseline_settings_24" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/location_icon">
+
+                <TextView
+                    android:id="@+id/location_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location &amp; Time" />
+
+                <TextView
+                    android:id="@+id/location_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/location_heading"
                     android:text="The time is 12:00 AM" />
             </RelativeLayout>
 
@@ -185,26 +235,25 @@
         android:id="@+id/text_layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/event_add"
-        >
+        android:layout_below="@id/event_add">
 
         <TextView
             android:id="@id/notification_text"
-            android:visibility="visible"
-            android:padding="20dp"
-            android:background="#D3D1D1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#D3D1D1"
+            android:padding="20dp"
             android:text="No actions. Tap below to add one."
             android:textAlignment="center"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:visibility="visible" />
 
         <RelativeLayout
-            android:padding="15dp"
-            android:visibility="gone"
             android:id="@+id/notification"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/notification_icon"

@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="@+id/thanks_giving_pic">
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/thanksgiving"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -89,7 +89,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/exercise_pic"
+        android:id="@+id/news_pic"
         android:layout_width="450dp"
         android:layout_height="230dp"
         android:layout_marginTop="15dp"
@@ -105,15 +105,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exercise_pic">
+        app:layout_constraintTop_toTopOf="@+id/news_pic">
 
         <TextView
-            android:id="@+id/routine"
+            android:id="@+id/news"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
-            android:text="Daily News"
+            android:text="News Reminder"
             android:textColor="#FFFFFF"
             android:textSize="30sp"
             android:textStyle="bold" />

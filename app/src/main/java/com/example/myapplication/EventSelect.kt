@@ -25,7 +25,6 @@ class EventSelect : AppCompatActivity() {
 
         //The time is Time
         binding.text1.setOnClickListener {
-
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Time-Set", true)
             startActivity(intent)

@@ -15,8 +15,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="5dp"
-        android:src="@drawable/ic_bc_things"
-        app:tint="#C7C7C7"
+        android:src="@drawable/things_nav_bar"
+        app:tint="#767474"
         app:layout_constraintBottom_toTopOf="@+id/no_things"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -28,7 +28,7 @@
         android:layout_marginBottom="5dp"
         android:text="No things!"
         android:textStyle="bold"
-        android:textColor="#C7C7C7"
+        android:textColor="#767474"
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/discover_failure"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:textColor="#C7C7C7"
+        android:textColor="#8E8C8C"
         android:text="It looks like we didn't discover any devices."
         app:layout_constraintBottom_toTopOf="@+id/trial"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,12 +50,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:textColor="#C7C7C7"
+        android:textColor="#8E8C8C"
         android:text="Try an option below"
         app:layout_constraintBottom_toTopOf="@+id/my_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <View
         android:id="@+id/my_line"

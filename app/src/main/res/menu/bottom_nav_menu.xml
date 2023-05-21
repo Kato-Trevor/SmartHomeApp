@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/Favorites" android:title="Favorites" android:icon="@drawable/baseline_star_24" />
-    <item android:id="@+id/Things"  android:title="Things" android:icon="@drawable/ic_bc_things"/>
-    <item android:id="@+id/Routines" android:title="Routines" android:icon="@drawable/baseline_rotate_right_24"/>
-    <item android:id="@+id/Ideas" android:title="Ideas" android:icon="@drawable/baseline_lightbulb_24"/>
-    <item android:id="@+id/Settings" android:title="Settings" android:icon="@drawable/baseline_tune_24"/>
+    <item
+        android:id="@+id/Favorites"
+        android:icon="@drawable/favorites_nav_bar"
+        android:title="Favorites"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/Things"
+        android:icon="@drawable/things_nav_bar"
+        android:title="Things"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/Routines"
+        android:icon="@drawable/routines_nav_bar"
+        android:title="Routines"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/Ideas"
+        android:icon="@drawable/ideas_nav_bar"
+        android:title="Ideas"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/Settings"
+        android:icon="@drawable/settings_nav_bar"
+        android:title="Settings"
+        app:showAsAction="always"/>
 </menu>

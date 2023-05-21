@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <!--ActionBar-->
     <RelativeLayout
         android:id="@+id/action_bar"
@@ -130,6 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/date"
+                    android:textStyle="bold"
                     android:text="The time is 12:00 AM" />
             </RelativeLayout>
 
@@ -208,6 +210,7 @@
                 android:layout_marginStart="20dp"
                 android:backgroundTint="#2196F3"
                 android:clickable="true"
+                app:tint="#FFFFFF"
                 android:contentDescription="view options"
                 android:src="@drawable/baseline_add_24" />
 
@@ -288,6 +291,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/title"
+                    android:textStyle="bold"
                     android:text="Send Notification: " />
             </RelativeLayout>
 
@@ -318,6 +322,7 @@
                 android:layout_marginStart="20dp"
                 android:backgroundTint="#2196F3"
                 android:clickable="true"
+                app:tint="#FFFFFF"
                 android:contentDescription="this is for adding new routines"
                 android:src="@drawable/baseline_add_24" />
 
@@ -380,6 +385,7 @@
                 android:layout_marginStart="20dp"
                 android:backgroundTint="#2196F3"
                 android:clickable="true"
+                app:tint="#FFFFFF"
                 android:contentDescription="this is for adding new routines"
                 android:src="@drawable/baseline_add_24" />
 

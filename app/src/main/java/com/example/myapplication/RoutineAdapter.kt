@@ -7,12 +7,24 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class RoutineAdapter(val context: Context, val list: ArrayList<RoutineModelClass>): RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
+class RoutineAdapter(
+    val context: Context,
+    private val list: ArrayList<RoutineModelClass>,
+    private val itemClickListener: OnItemClickListener
+) : RecyclerView.Adapter<RoutineAdapter.ViewHolder>() {
 
-
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, itemClickListener: OnItemClickListener) :
+        RecyclerView.ViewHolder(view) {
         val RoutineName =
             view.findViewById<TextView>(R.id.routine_name)
+        init {
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    itemClickListener.onItemClick(position)
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -21,7 +33,8 @@ class RoutineAdapter(val context: Context, val list: ArrayList<RoutineModelClass
                 R.layout.first_routine_list_layout,
                 parent,
                 false
-            )
+            ),
+            itemClickListener
         )
     }
 

@@ -4,10 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp">
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@android:style/Widget.DeviceDefault.ProgressBar.Horizontal"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Creating new Routine"/>
+
 </LinearLayout>

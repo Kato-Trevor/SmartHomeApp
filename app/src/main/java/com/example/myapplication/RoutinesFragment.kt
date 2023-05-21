@@ -64,10 +64,9 @@ class RoutinesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingActionButton.setOnClickListener {
-            val intent = Intent(context, NewRoutine::class.java)
+            val intent = Intent(context, RoutineInputs::class.java)
             startActivity(intent)
         }
-
     }
 
     companion object {

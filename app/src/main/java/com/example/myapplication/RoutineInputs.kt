@@ -75,6 +75,7 @@ class RoutineInputs : AppCompatActivity() {
 
         val notificationSet = intent.getBooleanExtra("Notification-Set", false)
         if (notificationSet) {
+            binding.conditionAdd.visibility = View.VISIBLE
             displayInputDialog()
             intent.putExtra("Notification-Set", false)
         }
@@ -173,7 +174,7 @@ class RoutineInputs : AppCompatActivity() {
     private fun displayProcessingDialog(inputText: String) {
 
         val myBuilder = AlertDialog.Builder(this)
-        myBuilder.setTitle("Creating new Routine")
+
         myBuilder.setCancelable(false)
 
         val dialogLayout = layoutInflater.inflate(R.layout.processing_dialog, null)
@@ -182,22 +183,19 @@ class RoutineInputs : AppCompatActivity() {
         val progressBar = dialogLayout.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.isIndeterminate = true
         progressBar.animate()
-
         val myBuild = myBuilder.create()
+
         myBuild.show()
 
-        val title = sharedPreferences.getString("routineName", "Failed")
-        val routineText = sharedPreferences.getString("Alert-Dialog", "failed text")
-
-        if (title != null && routineText != null) {
-            scheduleNotification(title, routineText)
+        val title = sharedPreferences.getString("routineName", null)
+        val text = sharedPreferences.getString("Alert-Dialog", null)
+        if (title?.isNotEmpty() == true && text?.isNotEmpty() == true) {
+            scheduleNotification(title, text)
         } else {
             Toast.makeText(applicationContext, "Error creating notification", Toast.LENGTH_LONG)
                 .show()
         }
-
         addRoutineRecord()
-
         Handler(Looper.getMainLooper()).postDelayed({
             myBuild.dismiss()
         }, 5000)
@@ -281,7 +279,7 @@ class RoutineInputs : AppCompatActivity() {
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-        showAlert(time, title, message)
+        Toast.makeText(this, "Notification created successfully", Toast.LENGTH_SHORT).show()
     }
 
     private fun showAlert(time: Long, title: String?, message: String) {
@@ -302,7 +300,6 @@ class RoutineInputs : AppCompatActivity() {
     private fun getTime(): Long {
         val hour = sharedPreferences.getInt("hourValue", 0)
         val minute = sharedPreferences.getInt("minuteValue", 0)
-
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = System.currentTimeMillis()
         calendar.set(Calendar.HOUR_OF_DAY, hour)
@@ -327,6 +324,7 @@ class RoutineInputs : AppCompatActivity() {
         val city = getCityName(lat, lon)
         val country = getCountryName(lat, lon)
         val time = intent.getStringExtra("Location-Time")
+
         AlertDialog.Builder(this)
             .setTitle("Schedule")
             .setMessage(
@@ -336,10 +334,14 @@ class RoutineInputs : AppCompatActivity() {
             .setPositiveButton("Accept") { _, _ ->
                 binding.location.visibility = View.VISIBLE
                 binding.textVisible.visibility = View.GONE
-
                 binding.locationValue.text = "$city, $country at $time"
                 //saving the time values with shared preferences
                 sharedPreferences.edit().putString("locationPref", "$city, $country").apply()
+                val routine = sharedPreferences.getString("routineName", null)
+                val notificationText = sharedPreferences.getString("Alert-Dialog", null)
+                if (routine != null && notificationText != null) {
+                    scheduleNotification(routine, notificationText)
+                }
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
@@ -435,9 +437,12 @@ class RoutineInputs : AppCompatActivity() {
     private fun getCityName(lat: Double, lon: Double): String? {
         var cityName: String? = ""
         val geoCoder = Geocoder(this, Locale.getDefault())
-        val address = geoCoder.getFromLocation(lat, lon, 1)
-
-        cityName = address?.get(0)?.locality
+        try {
+            val address = geoCoder.getFromLocation(lat, lon, 1)
+            cityName = address?.get(0)?.locality
+        } catch (e: Exception) {
+            Toast.makeText(this, "Please check your connection", Toast.LENGTH_SHORT).show()
+        }
         return cityName
     }
 

@@ -176,7 +176,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-
         </LinearLayout>
 
         <TextView
@@ -188,6 +187,7 @@
             android:textSize="20sp" />
 
         <LinearLayout
+            android:id="@+id/permissions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -205,7 +205,6 @@
                 android:text="Notifications &amp; Permissions"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
 
         </LinearLayout>
 

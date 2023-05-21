@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.TextView
 import com.example.myapplication.databinding.ActivityEventSelectBinding
 import com.example.myapplication.databinding.ActivityRoutineInputsBinding
+import java.util.*
 
 class EventSelect : AppCompatActivity() {
 
@@ -34,7 +35,7 @@ class EventSelect : AppCompatActivity() {
         binding.text2.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "6:50 PM")
+            intent.putExtra("Location-Time", getTime(18, 50))
             startActivity(intent)
             finish()
         }
@@ -42,7 +43,7 @@ class EventSelect : AppCompatActivity() {
         binding.text3.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "6:42 AM")
+            intent.putExtra("Location-Time", getTime(6,42))
             startActivity(intent)
             finish()
         }
@@ -50,7 +51,7 @@ class EventSelect : AppCompatActivity() {
         binding.text4.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "6:27 AM")
+            intent.putExtra("Location-Time", getTime(6,27))
             startActivity(intent)
             finish()
         }
@@ -58,7 +59,7 @@ class EventSelect : AppCompatActivity() {
         binding.text5.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "6:57 AM")
+            intent.putExtra("Location-Time", getTime(6, 57))
             startActivity(intent)
             finish()
         }
@@ -66,7 +67,7 @@ class EventSelect : AppCompatActivity() {
         binding.text6.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "6:35 PM")
+            intent.putExtra("Location-Time", getTime(18,35))
             startActivity(intent)
             finish()
         }
@@ -74,7 +75,7 @@ class EventSelect : AppCompatActivity() {
         binding.text7.setOnClickListener {
             val intent = Intent(this, RoutineInputs::class.java)
             intent.putExtra("Location-Set", true)
-            intent.putExtra("Location-Time", "7:05 PM")
+            intent.putExtra("Location-Time", getTime(19,5))
             startActivity(intent)
             finish()
         }
@@ -119,5 +120,13 @@ class EventSelect : AppCompatActivity() {
                 )
             }
         }
+    }
+
+    private fun getTime(hour: Int, minute: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        return calendar.timeInMillis
     }
 }

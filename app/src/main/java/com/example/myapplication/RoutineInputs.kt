@@ -106,6 +106,9 @@ class RoutineInputs : AppCompatActivity() {
             sharedPreferences.edit().clear().apply()
             finish()
         }
+        binding.checkIcon.setOnClickListener {
+           displayProcessingDialog()
+        }
     }
 
     private fun showTimeDialog() {
@@ -162,7 +165,7 @@ class RoutineInputs : AppCompatActivity() {
             sharedPreferences.edit().putString("Alert-Dialog", inputText).apply()
 
             //display the processing dialog
-            displayProcessingDialog(input.text.toString())
+            displayProcessingDialog()
         }
 
         myBuilder.setNegativeButton("Close") { dialog, _ ->
@@ -171,7 +174,7 @@ class RoutineInputs : AppCompatActivity() {
         myBuilder.show()
     }
 
-    private fun displayProcessingDialog(inputText: String) {
+    private fun displayProcessingDialog() {
 
         val myBuilder = AlertDialog.Builder(this)
 
@@ -323,13 +326,16 @@ class RoutineInputs : AppCompatActivity() {
     private fun showLocationDialog(lat: Double, lon: Double) {
         val city = getCityName(lat, lon)
         val country = getCountryName(lat, lon)
-        val time = intent.getStringExtra("Location-Time")
+        val time = intent.getLongExtra("Location-Time", 0)
+
+        val date = Date(time)
+        val timeFormat = DateFormat.getTimeFormat(applicationContext)
 
         AlertDialog.Builder(this)
             .setTitle("Schedule")
             .setMessage(
                 "Location: $city , $country" +
-                        "\nTime: $time"
+                        "\nTime: "+ timeFormat.format(date)
             )
             .setPositiveButton("Accept") { _, _ ->
                 binding.location.visibility = View.VISIBLE

@@ -3,27 +3,19 @@ package com.example.myapplication
 import android.app.*
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
-import android.location.Location
+
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.Manifest
-import android.content.Context
-import android.location.Address
-import android.location.Geocoder
-import android.location.LocationManager
-import android.location.LocationRequest
+
 import android.os.Looper
 import android.text.format.DateFormat
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import com.example.myapplication.databinding.ActivityRoutineInputsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -69,7 +61,9 @@ class RoutineInputs : AppCompatActivity() {
         val locationSet = intent.getBooleanExtra("Location-Set", false)
         if (locationSet) {
             binding.conditionAdd.visibility = View.VISIBLE
-            getLastLocation()
+            val lat = intent.getDoubleExtra("Latitude", 0.0)
+            val lon = intent.getDoubleExtra("Longitude", 0.0)
+            showLocationDialog(lat, lon)
             intent.putExtra("Location-Set", false)
         }
 
@@ -107,7 +101,7 @@ class RoutineInputs : AppCompatActivity() {
             finish()
         }
         binding.checkIcon.setOnClickListener {
-           displayProcessingDialog()
+            displayProcessingDialog()
         }
     }
 
@@ -220,9 +214,16 @@ class RoutineInputs : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("SELECTED_FRAGMENT", "routines")
                 startActivity(intent)
+
             }
         } else {
+            binding.location.visibility = View.GONE
+            binding.time.visibility = View.GONE
+            binding.textVisible.visibility = View.VISIBLE
+            binding.notification.visibility = View.GONE
+            binding.notificationText.visibility = View.VISIBLE
             Toast.makeText(applicationContext, "Error creating routine", Toast.LENGTH_LONG).show()
+
         }
     }
 
@@ -324,8 +325,8 @@ class RoutineInputs : AppCompatActivity() {
     }
 
     private fun showLocationDialog(lat: Double, lon: Double) {
-        val city = getCityName(lat, lon)
-        val country = getCountryName(lat, lon)
+        val city = intent.getStringExtra("City")
+        val country = intent.getStringExtra("Country")
         val time = intent.getLongExtra("Location-Time", 0)
 
         val date = Date(time)
@@ -335,12 +336,12 @@ class RoutineInputs : AppCompatActivity() {
             .setTitle("Schedule")
             .setMessage(
                 "Location: $city , $country" +
-                        "\nTime: "+ timeFormat.format(date)
+                        "\nTime: " + timeFormat.format(date)
             )
             .setPositiveButton("Accept") { _, _ ->
                 binding.location.visibility = View.VISIBLE
                 binding.textVisible.visibility = View.GONE
-                binding.locationValue.text = "$city, $country at $time"
+                binding.locationValue.text = "$city, $country at ${timeFormat.format(date)}"
                 //saving the time values with shared preferences
                 sharedPreferences.edit().putString("locationPref", "$city, $country").apply()
                 val routine = sharedPreferences.getString("routineName", null)
@@ -353,112 +354,6 @@ class RoutineInputs : AppCompatActivity() {
                 dialog.cancel()
             }
             .show()
-    }
-
-    private fun failed(st: String) {
-        AlertDialog.Builder(this)
-            .setTitle("Failure $st")
-            .setMessage(
-                "Failed"
-            )
-            .setPositiveButton("Accept") { _, _ -> }
-            .setNegativeButton("Cancel") { _, _ -> }
-            .show()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d("Debug", "You have the permission")
-            }
-        }
-        // Handle other permission request codes if needed
-    }
-
-
-    //checking uses permission
-    private fun checkPermission(): Boolean {
-        if (
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            return true
-        }
-        return false
-    }
-
-    //get user permission
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            LOCATION_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    //check location feature
-    private fun isLocationEnabled(): Boolean {
-        val locationManager: LocationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
-    }
-
-    private fun getLastLocation() {
-        if (checkPermission()) {
-            if (isLocationEnabled()) {
-                fusedLocationClient.lastLocation.addOnCompleteListener { task ->
-                    var location: Location? = task.result
-                    if (location == null) {
-                        Toast.makeText(this, "Failed to get location", Toast.LENGTH_SHORT).show()
-                    } else {
-                        showLocationDialog(location.latitude, location.longitude)
-                    }
-                }
-            } else {
-                Toast.makeText(this, "Please enable your location", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            requestPermission()
-        }
-    }
-
-    private fun getCityName(lat: Double, lon: Double): String? {
-        var cityName: String? = ""
-        val geoCoder = Geocoder(this, Locale.getDefault())
-        try {
-            val address = geoCoder.getFromLocation(lat, lon, 1)
-            cityName = address?.get(0)?.locality
-        } catch (e: Exception) {
-            Toast.makeText(this, "Please check your connection", Toast.LENGTH_SHORT).show()
-        }
-        return cityName
-    }
-
-    private fun getCountryName(lat: Double, lon: Double): String? {
-        var countryName: String? = ""
-        val geoCoder = Geocoder(this, Locale.getDefault())
-        val address = geoCoder.getFromLocation(lat, lon, 1)
-
-        countryName = address?.get(0)?.countryName
-        return countryName
     }
 
     private fun conditionDialog() {

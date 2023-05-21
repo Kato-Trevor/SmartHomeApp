@@ -2,14 +2,19 @@ package com.example.myapplication
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ActivityNewRoutineBinding
-import com.example.myapplication.databinding.ActivityRoutineInputsBinding
+import kotlin.collections.ArrayList
+
 
 class NewRoutine : AppCompatActivity() {
 
@@ -27,6 +32,9 @@ class NewRoutine : AppCompatActivity() {
         }
         binding.backArrow.setOnClickListener {
             finish()
+        }
+        if (getRoutinesList().size > 0) {
+            binding.addFavorites.visibility = View.VISIBLE
         }
         setUpRoutinesList()
     }
@@ -68,7 +76,7 @@ class NewRoutine : AppCompatActivity() {
         }
     }
 
-    private fun addFavorites(routine: RoutineModelClass){
+    private fun addFavorites(routine: RoutineModelClass) {
         val builder = AlertDialog.Builder(this)
         //set title for alert dialog
         builder.setTitle("Add to Favorites?")

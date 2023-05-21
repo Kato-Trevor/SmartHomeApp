@@ -70,6 +70,7 @@
         android:textSize="20sp"
         android:padding="10dp"
         android:gravity="center"
+        android:visibility="gone"
         android:id="@+id/add_favorites"
         android:layout_below="@id/create"
         android:layout_width="match_parent"

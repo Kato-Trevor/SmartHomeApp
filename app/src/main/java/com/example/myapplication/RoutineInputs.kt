@@ -3,17 +3,17 @@ package com.example.myapplication
 import android.app.*
 import android.content.Intent
 import android.content.SharedPreferences
-
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-
 import android.os.Looper
 import android.text.format.DateFormat
 import android.view.View
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.myapplication.databinding.ActivityRoutineInputsBinding
@@ -332,24 +332,36 @@ class RoutineInputs : AppCompatActivity() {
         val date = Date(time)
         val timeFormat = DateFormat.getTimeFormat(applicationContext)
 
-        AlertDialog.Builder(this)
-            .setTitle("Schedule")
-            .setMessage(
-                "Location: $city , $country" +
-                        "\nTime: " + timeFormat.format(date)
-            )
-            .setPositiveButton("Accept") { _, _ ->
-                binding.location.visibility = View.VISIBLE
-                binding.textVisible.visibility = View.GONE
-                binding.locationValue.text = "$city, $country at ${timeFormat.format(date)}"
-                //saving the time values with shared preferences
-                sharedPreferences.edit().putString("locationPref", "$city, $country").apply()
-                val routine = sharedPreferences.getString("routineName", null)
-                val notificationText = sharedPreferences.getString("Alert-Dialog", null)
-                if (routine != null && notificationText != null) {
-                    scheduleNotification(routine, notificationText)
-                }
-            }
+        val myBuilder = AlertDialog.Builder(this)
+
+        myBuilder.setTitle("Schedule")
+
+        val inputLocation = EditText(this)
+        val inputTime = TextView(this)
+
+        val layout = LinearLayout(this)
+        layout.orientation = LinearLayout.VERTICAL
+
+        layout.addView(inputLocation)
+        layout.addView(inputTime)
+
+        myBuilder.setView(layout)
+
+        inputLocation.setText("$city , $country")
+        inputLocation.hint = "Location"
+
+        inputTime.text = "Time: ${timeFormat.format(date)}"
+
+        myBuilder.setPositiveButton("Accept") { _, _ ->
+            val location = inputLocation.text.toString()
+            binding.location.visibility = View.VISIBLE
+            binding.textVisible.visibility = View.GONE
+            binding.locationValue.text = "$location at ${timeFormat.format(date)}"
+
+            //saving the time values with shared preferences
+            sharedPreferences.edit().putString("locationPref", location).apply()
+
+        }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
             }

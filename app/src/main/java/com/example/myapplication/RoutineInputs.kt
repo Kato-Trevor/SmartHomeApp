@@ -53,6 +53,7 @@ class RoutineInputs : AppCompatActivity() {
         //time
         val timeSet = intent.getBooleanExtra("Time-Set", false)
         if (timeSet) {
+            binding.location.visibility = View.GONE
             binding.conditionAdd.visibility = View.VISIBLE
             showTimeDialog()
             intent.putExtra("Time-Set", false)
@@ -61,6 +62,7 @@ class RoutineInputs : AppCompatActivity() {
         val locationSet = intent.getBooleanExtra("Location-Set", false)
         if (locationSet) {
             binding.conditionAdd.visibility = View.VISIBLE
+            binding.time.visibility = View.GONE
             val lat = intent.getDoubleExtra("Latitude", 0.0)
             val lon = intent.getDoubleExtra("Longitude", 0.0)
             showLocationDialog(lat, lon)
@@ -128,6 +130,7 @@ class RoutineInputs : AppCompatActivity() {
 
                 binding.time.visibility = View.VISIBLE
                 binding.textVisible.visibility = View.GONE
+                binding.location.visibility = View.GONE
 
                 binding.timeValue.text = "The time is $timeText"
                 //saving the time values with shared preferences
@@ -135,6 +138,11 @@ class RoutineInputs : AppCompatActivity() {
 
             }, hour, minutes, false
         )
+        myTimeDialog.setButton(TimePickerDialog.BUTTON_NEGATIVE, "CANCEL") { _, _ ->
+            binding.location.visibility = View.GONE
+            binding.time.visibility = View.GONE
+            binding.textVisible.visibility = View.VISIBLE
+        }
         myTimeDialog.show()
     }
 
@@ -356,13 +364,17 @@ class RoutineInputs : AppCompatActivity() {
             val location = inputLocation.text.toString()
             binding.location.visibility = View.VISIBLE
             binding.textVisible.visibility = View.GONE
+            binding.time.visibility = View.GONE
             binding.locationValue.text = "$location at ${timeFormat.format(date)}"
 
             //saving the time values with shared preferences
             sharedPreferences.edit().putString("locationPref", location).apply()
-
         }
             .setNegativeButton("Cancel") { dialog, _ ->
+                binding.location.visibility = View.GONE
+                binding.textVisible.visibility = View.VISIBLE
+                binding.time.visibility = View.GONE
+
                 dialog.cancel()
             }
             .show()

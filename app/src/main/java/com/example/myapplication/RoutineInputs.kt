@@ -348,7 +348,7 @@ class RoutineInputs : AppCompatActivity() {
         myBuilder.setView(layout)
 
         inputLocation.setText("$city , $country")
-        inputLocation.hint = "Location"
+        inputLocation.hint = "City, Country"
 
         inputTime.text = "Time: ${timeFormat.format(date)}"
 
